@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+Employee Dashboard
+</title>
+
+
+<style>
+
+body{
+
+font-family: Arial;
+background:#f2f2f2;
+padding:40px;
+
+}
+
+
+.card{
+
+background:white;
+padding:25px;
+border-radius:10px;
+width:400px;
+box-shadow:0 0 10px gray;
+
+}
+
+
+button{
+
+padding:10px;
+background:#007bff;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+
+}
+
+
+input{
+
+padding:10px;
+width:250px;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+
+<h1>
+Employee Management Dashboard
+</h1>
+
+
+
+<input id="empid"
+placeholder="Enter Employee ID"
+value="EMP001">
+
+
+
+<button onclick="loadEmployee()">
+Search
+</button>
+
+
+
+<br><br>
+
+
+
+<div class="card" id="result">
+
+Enter Employee ID
+
+</div>
+
+
+
+
+<script>
+
+
+async function loadEmployee(){
+
+
+let id=document.getElementById("empid").value;
+
+
+
+let employeeResponse =
+await fetch(
+"http://127.0.0.1:8000/employee/"+id
+);
+
+
+
+let employee =
+await employeeResponse.json();
+
+
+
+
+
+let attendanceResponse =
+await fetch(
+"http://127.0.0.1:8000/attendance/"+id
+);
+
+
+
+let attendance =
+await attendanceResponse.json();
+
+
+
+
+
+document.getElementById("result").innerHTML=`
+
+<h2>${employee.employee.name}</h2>
+
+
+<p>
+<b>Email:</b>
+${employee.employee.email}
+</p>
+
+
+<p>
+<b>Department:</b>
+${employee.employee.department}
+</p>
+
+
+<hr>
+
+
+<h3>
+Leave Details
+</h3>
+
+
+<p>
+Total Leaves:
+${employee.leave.total_leaves}
+</p>
+
+
+<p>
+Used Leaves:
+${employee.leave.used_leaves}
+</p>
+
+
+<p>
+Remaining Leaves:
+${employee.leave.remaining_leaves}
+</p>
+
+
+<hr>
+
+
+<h3>
+Attendance
+</h3>
+
+
+<p>
+Total Days:
+${attendance.total_days}
+</p>
+
+
+<p>
+Present:
+${attendance.present_days}
+</p>
+
+
+<p>
+Absent:
+${attendance.absent_days}
+</p>
+
+
+<p>
+Attendance:
+${attendance.attendance_percentage}%
+</p>
+
+
+`;
+
+
+
+}
+
+
+</script>
+
+
+
+</body>
+
+
+</html>
